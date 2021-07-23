@@ -1,6 +1,7 @@
 # TCA
 # Main driver file
 import pygame
+# importing the ChessEngine from the other python code file named  "Chess engine" from the python package named "Chess "all stored in the folder named "Chess"
 from Chess import ChessEngine
 pygame.init()
 # Title and Icon
