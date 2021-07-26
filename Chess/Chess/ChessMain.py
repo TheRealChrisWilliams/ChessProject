@@ -1,7 +1,7 @@
 # TCA
 # Main driver file
 import pygame
-# importing the ChessEngine from the other python code file named  "Chess engine" from the python package named "Chess "all stored in the folder named "Chess"
+# importing the ChessEngine from the other python code file named  "Chess engine" all stored in the folder named "Chess"
 from Chess import ChessEngine
 pygame.init()
 # Title and Icon
@@ -9,7 +9,7 @@ pygame.display.set_caption("Chess")
 icon = pygame.image.load('chess.png')
 pygame.display.set_icon(icon)
 
-WIDTH = HEIGHT = 400
+WIDTH = HEIGHT = 512
 DIMENSION = 8
 SQ_SIZE = HEIGHT//DIMENSION
 MAX_FPS = 15   # for animations apparently
@@ -27,11 +27,30 @@ def main():
     gs = ChessEngine.GameState()
     loadImages()
     running = True
+    sqSelected = ()
+    playerclicks= []
     while running:
-        screen.fill(pygame.Color("white"))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+# VP                
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                location = pygame.mouse.get_pos()
+                col = location[0]//SQ_SIZE
+                row = location[1]//SQ_SIZE
+                if sqSelected == (row,col):
+                    sqSelected = ()
+                    playerclicks= [] 
+                else:
+                    sqSelected = (row,col)
+                    playerclicks.append(sqSelected)
+                if len(playerclicks) == 2:
+                    move =ChessEngine.Move(playerclicks[0], playerclicks[1], gs.board)
+                    print(move.getChessNotation())
+                    gs.makeMove(move)
+                    sqSelected = ()
+                    playerclicks= []
+# TCA
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         pygame.display.flip()
